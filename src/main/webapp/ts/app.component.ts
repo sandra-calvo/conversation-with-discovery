@@ -355,7 +355,29 @@ export class AppComponent {
             }
           }
         }
+        // Speak out addition by KK
+        console.log('Got ' + responseText);
+        let text = responseText;
+        let msg = new SpeechSynthesisUtterance();
+        let voices = window.speechSynthesis.getVoices();
+        let voice = 0;
+        for (let i = 0; i < voices.length; i++) {
+          console.log('Voice: ' + i + '/' + voices.length + voices[i].name + ' lang ' + voices[i].lang);
+          if (voices[i].lang === 'fi-FI') {
+            voice = i;
+          }
+        }
+        msg.voice = voices[voice];
+        // msg.rate = $('#rate').val() / 10;
+        // msg.pitch = $('#pitch').val();
+        msg.text = text;
 
+        msg.onend = function(e) {
+          console.log('Finished  ');
+        };
+
+        speechSynthesis.speak(msg);
+        
         this.segments.push (new DialogResponse (responseText, false, ce, data1));
         chatColumn.classList.remove ('loading');
         if (this.timer) {

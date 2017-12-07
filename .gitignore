@@ -30,3 +30,6 @@ app.log
 bin/
 logs/
 .idea/
+
+### manifest ###
+manifest.yml

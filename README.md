@@ -165,6 +165,9 @@ For more information on workspaces, see the full  [Conversation service document
 ### Runo on Bluemix
 copy the manifest.yml.template to manifest.yml file
 edit manifest.yml to include your credentials
+edit manifest,yml and change name and host to unique values
+check the domain to match the region you are working on
+
 use cf push to deploy the application to Bluemis
 
 Note: You need to be logged in with the commandline tool
@@ -198,7 +201,14 @@ copy paste the following code snippet to the line 358
         let text = responseText;
         let msg = new SpeechSynthesisUtterance();
         let voices = window.speechSynthesis.getVoices();
-        msg.voice = voices[0];
+        let voice = 0;
+        for (let i = 0; i < voices.length; i++) {
+          console.log('Voice: ' + i + '/' + voices.length + voices[i].name + ' lang ' + voices[i].lang);
+          if (voices[i].lang === 'fi-FI') {
+            voice = i;
+          }
+        }
+        msg.voice = voices[voice];
         // msg.rate = $('#rate').val() / 10;
         // msg.pitch = $('#pitch').val();
         msg.text = text;
