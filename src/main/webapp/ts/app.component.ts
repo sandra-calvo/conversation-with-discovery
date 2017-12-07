@@ -361,10 +361,13 @@ export class AppComponent {
         let msg = new SpeechSynthesisUtterance();
         let voices = window.speechSynthesis.getVoices();
         let voice = 0;
-        for (let i = 0; i < voices.length; i++) {
-          console.log('Voice: ' + i + '/' + voices.length + voices[i].name + ' lang ' + voices[i].lang);
-          if (voices[i].lang === 'fi-FI') {
-            voice = i;
+
+        if (typeof data1.intents[0] !== 'undefined') {
+          for (let i = 0; i < voices.length; i++) {
+            console.log('Voice: ' + i + '/' + voices.length + voices[i].name + ' lang ' + voices[i].lang);
+            if (voices[i].lang === 'fi-FI' && data1.intents[0].intent === 'SpeakFinnish') {
+              voice = i;
+            }
           }
         }
         msg.voice = voices[voice];
@@ -377,7 +380,7 @@ export class AppComponent {
         };
 
         speechSynthesis.speak(msg);
-        
+
         this.segments.push (new DialogResponse (responseText, false, ce, data1));
         chatColumn.classList.remove ('loading');
         if (this.timer) {

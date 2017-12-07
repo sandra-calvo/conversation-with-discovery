@@ -202,10 +202,13 @@ copy paste the following code snippet to the line 358
         let msg = new SpeechSynthesisUtterance();
         let voices = window.speechSynthesis.getVoices();
         let voice = 0;
-        for (let i = 0; i < voices.length; i++) {
-          console.log('Voice: ' + i + '/' + voices.length + voices[i].name + ' lang ' + voices[i].lang);
-          if (voices[i].lang === 'fi-FI') {
-            voice = i;
+
+        if (typeof data1.intents[0] !== 'undefined') {
+          for (let i = 0; i < voices.length; i++) {
+            console.log('Voice: ' + i + '/' + voices.length + voices[i].name + ' lang ' + voices[i].lang);
+            if (voices[i].lang === 'fi-FI' && data1.intents[0].intent === 'SpeakFinnish') {
+              voice = i;
+            }
           }
         }
         msg.voice = voices[voice];
