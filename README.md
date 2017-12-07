@@ -162,6 +162,14 @@ For more information on workspaces, see the full  [Conversation service document
 <a name="env">
 </a>
 
+### Runo on Bluemix
+copy the manifest.yml.template to manifest.yml file
+edit manifest.yml to include your credentials
+use cf push to deploy the application to Bluemis
+
+Note: You need to be logged in with the commandline tool
+Note2: If you use this manifest approach you can skip the next section
+
 ### Adding environment variables in Bluemix
 
 1. In Bluemix, open the application from the Dashboard. Select **Runtime** and then **Environment Variables**.
@@ -179,6 +187,32 @@ For more information on workspaces, see the full  [Conversation service document
   ![](readme_images/env_var_text.png)
 4. Select **SAVE**.
 5. Restart your application.
+
+
+### Adding Speech support
+edit the app.component.ts
+copy paste the following code snippet to the line 358
+
+// Speak out addition by KK
+        console.log('Got ' + responseText);
+        let text = responseText;
+        let msg = new SpeechSynthesisUtterance();
+        let voices = window.speechSynthesis.getVoices();
+        msg.voice = voices[0];
+        // msg.rate = $('#rate').val() / 10;
+        // msg.pitch = $('#pitch').val();
+        msg.text = text;
+
+        msg.onend = function(e) {
+          console.log('Finished  ');
+        };
+
+        speechSynthesis.speak(msg);
+
+Build the application and deploy to IBM Cloud
+
+gradle build
+cf push
 
 ---
 

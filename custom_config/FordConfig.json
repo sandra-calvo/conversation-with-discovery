@@ -133,12 +133,20 @@
   },
   "enrichments": [
     {
-      "enrichment": "alchemy_language",
-      "source_field": "body",
+      "enrichment": "natural_language_understanding",
+      "source_field": "text",
+      "destination_field": "enriched_text",
       "options": {
-        "extract": "entity,keyword,concept,taxonomy"
-      },
-      "destination_field": "body_enriched"
+        "features": {
+          "keywords": {},
+          "entities": {
+            "sentiment": true,
+            "emotion": false,
+            "limit": 50
+          },
+          "categories": {}
+        }
+      }
     }
   ],
   "normalizations": [

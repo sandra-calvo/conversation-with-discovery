@@ -355,6 +355,7 @@ export class AppComponent {
             }
           }
         }
+
         this.segments.push (new DialogResponse (responseText, false, ce, data1));
         chatColumn.classList.remove ('loading');
         if (this.timer) {
