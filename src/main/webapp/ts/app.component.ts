@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-import {Component} from 'angular2/core';
+import {Component, HostListener} from 'angular2/core';
 import {DialogResponse} from './dialog.response';
 import {DialogService} from './dialog.service';
 import {Http, Headers} from 'angular2/http';
@@ -61,7 +61,7 @@ import {PayloadComponent} from './payload';
       <footer>
       <label for='textInput' class='inputOutline'>
         <input id='textInput' class='input responsive-column' placeholder='Type something' type='text'
-          [(ngModel)]='question' (keydown)='keypressed($event)' style='width:100%'>
+          [(ngModel)]='question' (keydown)='keypressed($event)'  style='width:100%'>
       </label>
       <div class='draw'></div>
     </footer>
@@ -230,6 +230,16 @@ export class AppComponent {
       expcoll.style.display = 'block';
     }
   }
+
+  /*
+ * This method is responsible for clicking ask image.
+ */
+@HostListener('window:test', ['$event'])
+  private ask (event) {
+  console.log('Ask pressed');
+  this.sendData ();
+}
+
 /*
  * This method is responsible for triggering a request whenever a Enter key is pressed .
  */
@@ -248,6 +258,7 @@ export class AppComponent {
       element.style.width = '0px';
     }
   }
+
 /*
  * This method is responsible for changing the layout of payload section based on screen resolution.
  */
@@ -357,29 +368,20 @@ export class AppComponent {
         }
         // Speak out addition by KK
         console.log('Got ' + responseText);
-        let text = responseText;
-        let msg = new SpeechSynthesisUtterance();
+        let msg = new SpeechSynthesisUtterance(responseText);
         let voices = window.speechSynthesis.getVoices();
-        let voice = 0;
 
-        if (typeof data1.intents[0] !== 'undefined') {
-          for (let i = 0; i < voices.length; i++) {
-            console.log('Voice: ' + i + '/' + voices.length + voices[i].name + ' lang ' + voices[i].lang);
-            if (voices[i].lang === 'fi-FI' && data1.intents[0].intent === 'SpeakFinnish') {
-              voice = i;
-            }
-          }
+        msg.lang = 'en-US';
+        if (typeof data1.intents[0] !== 'undefined' && data1.intents[0].intent === 'SpeakFinnish') {
+          msg.lang = 'fi-FI';
         }
-        msg.voice = voices[voice];
-        // msg.rate = $('#rate').val() / 10;
-        // msg.pitch = $('#pitch').val();
-        msg.text = text;
 
         msg.onend = function(e) {
           console.log('Finished  ');
         };
 
-        speechSynthesis.speak(msg);
+        console.log('Start talking  ');
+        window.speechSynthesis.speak(msg);
 
         this.segments.push (new DialogResponse (responseText, false, ce, data1));
         chatColumn.classList.remove ('loading');

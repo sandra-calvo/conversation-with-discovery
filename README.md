@@ -193,34 +193,16 @@ Note2: If you use this manifest approach you can skip the next section
 
 
 ### Adding Speech support
-edit the app.component.ts
-copy paste the following code snippet to the line 358
+The original application was edited to add support for speech command. The following changes where made.
 
-// Speak out addition by KK
-        console.log('Got ' + responseText);
-        let text = responseText;
-        let msg = new SpeechSynthesisUtterance();
-        let voices = window.speechSynthesis.getVoices();
-        let voice = 0;
+1. index.html
+IOS devices do not allow usage of speech sunthesis from dynamically created template.
+Because of this speech syntesis is initialized in the index.htm and the angular is triggered 
+through the custom event handler
 
-        if (typeof data1.intents[0] !== 'undefined') {
-          for (let i = 0; i < voices.length; i++) {
-            console.log('Voice: ' + i + '/' + voices.length + voices[i].name + ' lang ' + voices[i].lang);
-            if (voices[i].lang === 'fi-FI' && data1.intents[0].intent === 'SpeakFinnish') {
-              voice = i;
-            }
-          }
-        }
-        msg.voice = voices[voice];
-        // msg.rate = $('#rate').val() / 10;
-        // msg.pitch = $('#pitch').val();
-        msg.text = text;
-
-        msg.onend = function(e) {
-          console.log('Finished  ');
-        };
-
-        speechSynthesis.speak(msg);
+2. app.component.ts
+Custom event handler was added (lines 237-241)
+Speech syntesis was added (lines 369-384)
 
 Build the application and deploy to IBM Cloud
 
