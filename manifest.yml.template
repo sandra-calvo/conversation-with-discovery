@@ -1,14 +1,14 @@
 ---
 applications:
-- name: kimmoconvwithwatson
-  host: kimmoconvwithwatson
+- name: YOURAPP
+  host: YOURAPP
   path: build/libs/conversation-with-discovery-0.1-SNAPSHOT.war
   memory: 512M
   instances: 1
   domain: eu-gb.mybluemix.net
   services:
-  - Discovery-mandatum
-  - Conversation-mandatum
+  - Discovery
+  - Conversation
   env:
     CONVERSATION_USERNAME: <EDIT THIS>
     CONVERSATION_PASSWORD: <EDIT THIS>
